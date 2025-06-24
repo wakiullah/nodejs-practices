@@ -2,8 +2,25 @@ const http = require('http');
 const url = require('url');
 const { StringDecoder } = require('string_decoder');
 const { manageRequest } = require('./helpers/handleReqRes');
+const { createFile, readFile, updateFile } = require('./lib/data');
 //main app configs
 const app = {}
+
+
+// testing file system
+
+updateFile('test', 'newFile', { name: 'test file', address: 'Thakurgaon' }, (err) => {
+    if (!err) {
+        console.log('File created successfully');
+    } else {
+        console.log('Error:', err);
+    }
+});
+
+readFile('test', 'newFile', (err, data) => {
+    console.log('Read File Data:', data);
+
+})
 
 app.config = {
     'port': 3000,

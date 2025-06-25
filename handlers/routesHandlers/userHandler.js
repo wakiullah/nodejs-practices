@@ -60,7 +60,7 @@ _user.delete = (props, callback) => {
 }
 _user.post = (props, callback) => {
     console.log('post', props);
-    
+
     const firstName = typeof (props.body.firstName) === 'string' && props.body.firstName.trim().length > 0 ? props.body.firstName : false
 
     const lastName = typeof (props.body.lastName) === 'string' && props.body.lastName.trim().length > 0 ? props.body.lastName : false
@@ -109,13 +109,12 @@ _user.post = (props, callback) => {
 _user.put = (props, callback) => {
 
     const number = typeof (props.body.number) === "string" && props.body.number.trim().length === 11 ? props.body.number : false
+    const password = typeof (props.body.password) === 'string' && props.body.password.trim().length > 6 ? props.body.password : false
 
     if (number) {
         const firstName = typeof (props.body.firstName) === 'string' && props.body.firstName.trim().length > 0 ? props.body.firstName : false
 
         const lastName = typeof (props.body.lastName) === 'string' && props.body.lastName.trim().length > 0 ? props.body.lastName : false
-
-        const password = typeof (props.body.password) === 'string' && props.body.password.trim().length > 6 ? props.body.password : false
 
         if (firstName || lastName || password) {
             lib.read('users', number, (err, data) => {
@@ -130,6 +129,8 @@ _user.put = (props, callback) => {
                     if (password) {
                         userData.password = utilities.hashStr(password);
                     }
+                    console.log('userData', userData);
+
                     lib.update('users', number, userData, (err) => {
                         if (!err) {
                             callback(200, {

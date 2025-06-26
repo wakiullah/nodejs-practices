@@ -26,7 +26,7 @@ const _user = {}
 
 _user.get = (props, callback) => {
     const number = typeof (props.body.number) === "string" && props.body.number.trim().length === 11 ? props.body.number : false
-    console.log('number', number);
+    console.log('numberss', props);
 
     if (number) {
         lib.read('users', number, (err, u) => {
@@ -46,16 +46,42 @@ _user.get = (props, callback) => {
                 callback(404, {
                     message: 'User not found!'
                 })
+                
             }
         })
     }
 
 }
 _user.delete = (props, callback) => {
-    const response = {
-        message: 'This is a user delete response',
+    const number = typeof (props.body.number) === "string" && props.body.number.trim().length === 11 ? props.body.number : false
+
+    if (number) {
+        lib.read('users', number, (err, data) => {
+            if (!err && data) {
+                lib.delete('users', number, (err) => {
+                    if (!err) {
+                        callback(200, {
+                            message: 'User deleted successfully!'
+                        })
+                    } else {
+                        callback(500, {
+                            message: 'Could not delete the user!'
+                        })
+                    }
+                })
+
+            } else {
+                return callback(404, {
+                    message: 'User not found!'
+                })
+            }
+        })
+
+    } else {
+        callback(400, {
+            message: 'Invalid TDSF number provided!'
+        })
     }
-    callback(203, response)
 
 }
 _user.post = (props, callback) => {
@@ -107,14 +133,16 @@ _user.post = (props, callback) => {
     }
 }
 _user.put = (props, callback) => {
+    console.log('PUT handler called', props.body); // Add this line
 
     const number = typeof (props.body.number) === "string" && props.body.number.trim().length === 11 ? props.body.number : false
     const password = typeof (props.body.password) === 'string' && props.body.password.trim().length > 6 ? props.body.password : false
+    const firstName = typeof (props.body.firstName) === 'string' && props.body.firstName.trim().length > 0 ? props.body.firstName : false
+
+    const lastName = typeof (props.body.lastName) === 'string' && props.body.lastName.trim().length > 0 ? props.body.lastName : false
+    console.log('number', number, 'firstName', firstName, 'lastName', lastName, 'password', password);
 
     if (number) {
-        const firstName = typeof (props.body.firstName) === 'string' && props.body.firstName.trim().length > 0 ? props.body.firstName : false
-
-        const lastName = typeof (props.body.lastName) === 'string' && props.body.lastName.trim().length > 0 ? props.body.lastName : false
 
         if (firstName || lastName || password) {
             lib.read('users', number, (err, data) => {
@@ -149,7 +177,7 @@ _user.put = (props, callback) => {
 
     } else {
         callback(400, {
-            message: 'Invalid number provided!'
+            message: 'Invalid TDSF  number provided!'
         })
     }
 }

@@ -27,6 +27,8 @@ helpers.manageReqRes = (req, res) => {
         bodyData += decoder.end();
         try {
             GetInfo.body = JSON.parse(bodyData);
+            console.log('Parsed body:', GetInfo.body);
+
         } catch (e) {
             GetInfo.body = {};
         }
@@ -35,6 +37,8 @@ helpers.manageReqRes = (req, res) => {
             statusCode = typeof (statusCode) === 'number' ? statusCode : 200
             res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCode);
+            console.log('Response status code:', statusCode);
+
             res.end(payloadString);
         });
     })

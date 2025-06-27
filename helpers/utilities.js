@@ -37,5 +37,19 @@ utilities.hash = (str) => {
     return false;
 };
 
+utilities.randonToken = (length) => {
+    const totalLength = typeof (length) === "number" && length > 6 ? length : false
+    if (totalLength) {
+        let token = '';
+        const charectures = 'abcdefghijklmnopqrstuvwxyz123456789';
+        for (let i = 0; i <= length; i++) {
+            const random = charectures.charAt(Math.floor(Math.random() * charectures.length))
+            token += random
+        }
+
+        return token
+    }
+}
+
 // export module
 module.exports = utilities;

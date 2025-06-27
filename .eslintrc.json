@@ -1,5 +1,8 @@
 {
-  "extends": ["airbnb-base", "prettier"],
+  "extends": [
+    "airbnb-base",
+    "prettier"
+  ],
   "parserOptions": {
     "ecmaVersion": 12
   },
@@ -15,11 +18,15 @@
       {
         "trailingComma": "es5",
         "singleQuote": true,
-        "printWidth": 100,
+        "printWidth": 200,
         "tabWidth": 4,
-        "semi": true
+        "semi": true,
+        "endOfLine": "auto",
+        "bracketSpacing": true,
       }
     ]
   },
-  "plugins": ["prettier"]
+  "plugins": [
+    "prettier"
+  ]
 }

@@ -1,46 +1,68 @@
+/*
+ * Title: Handle Request Response
+ * Description: Handle Resquest and response
+ * Author: Sumit Saha ( Learn with Sumit )
+ * Date: 11/21/2020
+ *
+ */
 
-// const url = require('url');
-// const { StringDecoder } = require('string_decoder');
-// const routes = require('../routes');
-// const handler = {}
+// dependencies
+const url = require('url');
+const { StringDecoder } = require('string_decoder');
+const routes = require('../routes');
+const { notFoundHandler } = require('../handlers/routeHandlers/notFoundHandler');
+const { parseJSON } = require('./utilities');
 
-// handler.manageRequest = (req, res) => {
-//     const parserdUrl = url.parse(req.url, true);
-//     const path = parserdUrl.pathname.replace(/^\/+|\/+$/g, '');
-//     const decoder = new StringDecoder('utf-8');
+// modue scaffolding
+const handler = {};
 
+handler.handleReqRes = (req, res) => {
+    // request handling
+    // get the url and parse it
+    const parsedUrl = url.parse(req.url, true);
+    const path = parsedUrl.pathname;
+    const trimmedPath = path.replace(/^\/+|\/+$/g, '');
+    const method = req.method.toLowerCase();
+    const queryStringObject = parsedUrl.query;
+    const headersObject = req.headers;
 
-//     let buffer = '';
-//     const ourDataObject = {
-//         'path': path,
-//         'query': parserdUrl.query,
-//         'method': req.method.toLowerCase(),
-//         'headers': req.headers,
-//     }
+    const requestProperties = {
+        parsedUrl,
+        path,
+        trimmedPath,
+        method,
+        queryStringObject,
+        headersObject,
+    };
 
-//     const chooseHandler = routes[path] ? routes[path] : routes['notFound'];
-//     chooseHandler(ourDataObject, (statusCode, payload) => {
+    const decoder = new StringDecoder('utf-8');
+    let realData = '';
 
-//         statusCode = typeof statusCode === 'number' ? statusCode : 500;
-//         payload = typeof payload === 'object' ? payload : {};
+    const chosenHandler = routes[trimmedPath] ? routes[trimmedPath] : notFoundHandler;
 
-//         const payloadString = JSON.stringify(payload);
-//         console.log(statusCode, payloadString);
+    req.on('data', (buffer) => {
+        realData += decoder.write(buffer);
+    });
 
-//         // return the final response
-//         // res.writeHead(statusCode);
-//         res.end(payloadString);
-//     })
+    req.on('end', () => {
+        realData += decoder.end();
 
-//     req.on('data', (data) => {
-//         buffer += decoder.write(data);
-//     });
+        requestProperties.body = parseJSON(realData);
+        try {
+            requestProperties.body = JSON.parse(realData);
+        } catch (e) {
+            requestProperties.body = {};
+        }
+        chosenHandler(requestProperties, (statusCode, payload) => {
+            const newstatusCode = typeof statusCode === 'number' ? statusCode : 500;
+            const newpayload = typeof payload === 'object' ? payload : {};
+            const payloadString = JSON.stringify(newpayload);
+            // return the final response
+            res.setHeader('Content-Type', 'application/json');
+            res.writeHead(newstatusCode);
+            res.end(payloadString);
+        });
+    });
+};
 
-//     req.on('end', () => {
-//         buffer += decoder.end();
-//         console.log('Request received:')
-//         res.end(buffer)
-//     })
-// }
-
-// module.exports = handler;
+module.exports = handler;

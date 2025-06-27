@@ -1,27 +1,41 @@
-const cripto = require("crypto");
+/*
+ * Title: Utilities
+ * Description: Important utility functions
+ * Author: Sumit Saha ( Learn with Sumit )
+ * Date: 11/21/2020
+ *
+ */
 
-const utilities = {}
+// dependencies
 
+// module scaffolding
+const crypto = require('crypto');
 
-utilities.checkJSONData = (JSONstring) => {
+const utilities = {};
+const environments = require('./environments');
 
-    let output = {};
+// parse JSON string to Object
+utilities.parseJSON = (jsonString) => {
+    let output;
+
     try {
-        output = JSON.parse(JSONstring)
-        console.log('Parsed JSON string successfully:', output);
-    } catch (error) {
-        output = {}
-        console.log('Error parsing JSON string:', error.message);
-
+        output = JSON.parse(jsonString);
+    } catch {
+        output = {};
     }
-    return output;
-}
 
-utilities.hashStr = (str) => {
+    return output;
+};
+
+// hash string
+utilities.hash = (str) => {
     if (typeof str === 'string' && str.length > 0) {
-        const hash = cripto.createHash('sha256', 'sadfasdfas').update(str).digest('hex');
+        console.log(environments, process.env.NODE_ENV);
+        const hash = crypto.createHmac('sha256', environments.secretKey).update(str).digest('hex');
         return hash;
     }
-}
+    return false;
+};
 
-module.exports = utilities
+// export module
+module.exports = utilities;

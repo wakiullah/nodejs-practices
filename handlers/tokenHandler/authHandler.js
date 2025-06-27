@@ -1,4 +1,4 @@
-const { hash, randonToken } = require("../../helpers/utilities");
+const { hash, randonToken, parseJSON } = require("../../helpers/utilities");
 const lib = require("../../lib/data");
 
 const handlers = {}
@@ -37,14 +37,15 @@ handlers._auth.post = (requestProperties, callback) => {
 
             if (hashesPasword === userData.password) {
                 const expireToken = Date.now() + 60 * 60 * 1000;
+                const token = randonToken(8)
                 const tokenValues = {
                     phone,
                     expireToken,
-                    token: randonToken(8)
+                    token
                 }
 
 
-                lib.create('token', phone, tokenValues, (err, data) => {
+                lib.create('token', token, tokenValues, (err, data) => {
                     if (!err) {
                         callback(200, {
                             message: 'Token create successful!',
@@ -69,19 +70,16 @@ handlers._auth.post = (requestProperties, callback) => {
 // @TODO: Authentication
 handlers._auth.get = (requestProperties, callback) => {
     // check the phone number if valid
-
-    const phone =
-        typeof requestProperties.body.phone === 'string' &&
-            requestProperties.body.phone.trim().length === 11
-            ? requestProperties.body.phone
+    const token =
+        typeof requestProperties.body.token === 'string'
+            ? requestProperties.body.token
             : false;
 
-    if (phone) {
+    if (token) {
         // lookup the user
-        data.read('users', phone, (err, u) => {
+        lib.read('token', token, (err, u) => {
             const user = { ...parseJSON(u) };
             if (!err && user) {
-                delete user.password;
                 callback(200, user);
             } else {
                 callback(404, {

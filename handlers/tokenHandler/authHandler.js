@@ -6,16 +6,16 @@ const handlers = {}
 handlers.authHandler = (requestProperties, callback) => {
     const acceptableMethods = ['post', 'get', 'put', 'delete'];
     if (acceptableMethods.indexOf(requestProperties.method) > -1) {
-        handlers._auth[requestProperties.method](requestProperties, callback);
+        handlers._token[requestProperties.method](requestProperties, callback);
     } else {
         callback(405);
     }
 };
 
-handlers._auth = {};
+handlers._token = {};
 
 
-handlers._auth.post = (requestProperties, callback) => {
+handlers._token.post = (requestProperties, callback) => {
 
     const phone =
         typeof requestProperties.body.phone === 'string' &&
@@ -68,7 +68,7 @@ handlers._auth.post = (requestProperties, callback) => {
 };
 
 // @TODO: Authentication
-handlers._auth.get = (requestProperties, callback) => {
+handlers._token.get = (requestProperties, callback) => {
     // check the phone number if valid
     const token =
         typeof requestProperties.body.token === 'string'
@@ -95,37 +95,48 @@ handlers._auth.get = (requestProperties, callback) => {
 };
 
 // @TODO: Authentication
-handlers._auth.put = (requestProperties, callback) => {
+handlers._token.put = (requestProperties, callback) => {
     // check the phone number if valid
-    const phone =
-        typeof requestProperties.body.phone === 'string' &&
-            requestProperties.body.phone.trim().length === 11
-            ? requestProperties.body.phone
+    const token =
+        typeof requestProperties.headersObject.token === 'string'
+            ? requestProperties.headersObject.token
             : false;
 
-    const firstName =
-        typeof requestProperties.body.firstName === 'string' &&
-            requestProperties.body.firstName.trim().length > 0
-            ? requestProperties.body.firstName
-            : false;
+    if (token) {
+        // lookup the user
+        lib.read('token', token, (err, u) => {
+            const user = { ...parseJSON(u) };
+            if (!err && user && token === user.token) {
+                user.expireToken = Date.now() + 60 * 60 * 1000
+                lib.update('token', token, user, (err) => {
+                    if (!err) {
+                        callback(200, {
+                            message: 'Token Expended! '
+                        })
+                    } else {
+                        callback(300, {
+                            err: 'Token expend fail'
+                        })
+                    }
+                })
 
-    const lastName =
-        typeof requestProperties.body.lastName === 'string' &&
-            requestProperties.body.lastName.trim().length > 0
-            ? requestProperties.body.lastName
-            : false;
-
-    const password =
-        typeof requestProperties.body.password === 'string' &&
-            requestProperties.body.password.trim().length > 0
-            ? requestProperties.body.password
-            : false;
+            } else {
+                callback(404, {
+                    error: 'Requested user was not found!',
+                });
+            }
+        });
+    } else {
+        callback(404, {
+            error: 'Requested user was not found!',
+        });
+    }
 
 
 };
 
 // @TODO: Authentication
-handlers._auth.delete = (requestProperties, callback) => {
+handlers._token.delete = (requestProperties, callback) => {
     // check the phone number if valid
     const phone =
         typeof requestProperties.body.phone === 'string' &&
@@ -134,5 +145,19 @@ handlers._auth.delete = (requestProperties, callback) => {
             : false;
 };
 
+handlers._token.checker = (token, number, callback) => {
+    if (typeof (token) === "string" && token.length > 6) {
+        lib.read('token', token, (err, data) => {
+            const user = { ...parseJSON(data) };
+
+            if (user.token === token && user.phone === number) {
+                callback(true)
+            } else {
+                callback(false)
+            }
+        })
+    }
+
+}
 
 module.exports = handlers;

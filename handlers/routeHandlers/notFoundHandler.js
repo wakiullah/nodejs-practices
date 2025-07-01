@@ -5,7 +5,7 @@
  * Date: 11/15/2020
  *
  */
-// module scaffolding
+
 const handler = {};
 
 handler.notFoundHandler = (requestProperties, callback) => {

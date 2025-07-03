@@ -37,6 +37,7 @@ utilities.hash = (str) => {
     return false;
 };
 
+
 utilities.randonToken = (length) => {
     const totalLength = typeof (length) === "number" && length > 6 ? length : false
     if (totalLength) {

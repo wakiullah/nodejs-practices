@@ -2,15 +2,17 @@ const express = require('express')
 
 const app = express();
 
-app.use(express.json())
+const backend = express()
 
+backend.get('/dahsboard', (req, res) => {
+    res.send("this is backend dashboard")
+})
 
-app.post('/', (req, res) => {
-    console.log(req.body.name);
+app.get('/', (req, res) => {
     res.send('dthis is get')
 
 })
-
+app.use('/backend', backend)
 
 
 app.listen(3000, () => {

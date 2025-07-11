@@ -1,6 +1,7 @@
 const express = require('express')
 
 const app = express();
+app.use(express.json())
 
 const backend = express()
 
@@ -8,7 +9,9 @@ backend.get('/dahsboard', (req, res) => {
     res.send("this is backend dashboard")
 })
 
-app.get('/', (req, res) => {
+app.post('/hello/:id', (req, res) => {
+    console.log(req.params.id);
+
     res.send('dthis is get')
 
 })

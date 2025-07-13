@@ -22,3 +22,6 @@ app.get('/about', (req, res) => {
 app.listen(3000, () => {
     console.log('app is listening on port 3000');
 })
+
+const myUrl = new URL('https://www.example.com:8080/path/to/resource?name=John&age=30#section-id');
+console.log(myUrl);

@@ -1,19 +1,44 @@
-const express = require('express')
+const exprees = require('express')
+const app = exprees()
+const multer = require('multer')
 
-const app = express();
-app.get('/about', (req, res) => {
-    const oab = new URL(req.url, `http://${req.headers.host}`);
+const distFile = './uploadFile/'
 
-    const detail = Object.fromEntries(oab.searchParams)
-    console.log(oab.searchParams);
+const upload = multer({
+    dest: distFile,
+    limits: {
+        fileSize: 10000000
+    },
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype === 'image/png') {
+            cb(null, true)
+        }
+        else {
+            cb(new Error('please provide a png image'))
+        }
+    }
 
+})
 
-    res.send('about page')
+app.post('/', upload.single('avatar'), (req, res) => {
+    res.send('hello post data')
+})
+
+app.get('/', (req, res) => {
+    res.send('hellow world')
+})
+
+app.use((err, req, res, next) => {
+    if (err) {
+        if (err instanceof multer.MulterError) {
+            res.send('there was an errror')
+        } else {
+            res.send(err.message)
+        }
+    }
 })
 
 app.listen(3000, () => {
-    console.log('app is listening on port 3000');
-})
+    console.log('running');
 
-// const myUrl = new URL('https://www.example.com:8080/path/to/resource?name=John&age=30#section-id');
-// console.log(myUrl);
+})

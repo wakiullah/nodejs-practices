@@ -3,7 +3,7 @@ const app = exprees()
 const multer = require('multer')
 
 const distFile = './uploadFile/'
-
+const storage = multer.diskStorage()
 const upload = multer({
     dest: distFile,
     limits: {

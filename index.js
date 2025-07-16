@@ -4,7 +4,7 @@ const multer = require('multer')
 const filePath = require('path')
 const distFile = './uploadFile/'
 
-
+//jump to node js
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, distFile)
@@ -31,6 +31,9 @@ const upload = multer({
     }
 
 })
+
+
+
 
 app.post('/', upload.single('avatar'), (req, res) => {
     res.send('hello post data')

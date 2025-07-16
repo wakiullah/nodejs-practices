@@ -1,11 +1,23 @@
 const exprees = require('express')
 const app = exprees()
 const multer = require('multer')
-
+const filePath = require('path')
 const distFile = './uploadFile/'
-const storage = multer.diskStorage()
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, distFile)
+    },
+    filename: (req, file, cb) => {
+        const extName = filePath.extname(file.originalname)
+        const fileName = file.originalname.replace(extName, '').toLowerCase().split(' ').join('-') + '-' + Date.now() + extName
+        cb(null, fileName)
+    },
+})
+
 const upload = multer({
-    dest: distFile,
+    storage: storage,
     limits: {
         fileSize: 10000000
     },

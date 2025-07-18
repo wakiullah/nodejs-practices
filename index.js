@@ -16,6 +16,9 @@ const storage = multer.diskStorage({
     },
 })
 
+
+//start mongodb journey
+
 const upload = multer({
     storage: storage,
     limits: {

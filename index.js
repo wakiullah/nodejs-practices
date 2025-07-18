@@ -17,9 +17,6 @@ const storage = multer.diskStorage({
 })
 
 
-//start mongodb journey
-
-// we learn about crud oparation in mongodb
 
 const upload = multer({
     storage: storage,

@@ -1,61 +1,19 @@
-const exprees = require('express')
-const app = exprees()
-const multer = require('multer')
-const filePath = require('path')
-const distFile = './uploadFile/'
+import http from 'http'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 
-//jump to node js
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, distFile)
-    },
-    filename: (req, file, cb) => {
-        const extName = filePath.extname(file.originalname)
-        const fileName = file.originalname.replace(extName, '').toLowerCase().split(' ').join('-') + '-' + Date.now() + extName
-        cb(null, fileName)
-    },
+const serverHost = 3000
+const __dirname = import.meta.dirname
+const ourHtmlPath = path.join(__dirname, 'index.html')
+const server = http.createServer(async (req, res) => {
+
+    const data = await fs.readFile(ourHtmlPath, 'utf-8')
+    res.setHeader('Content-Type', 'text/html')
+    res.statusCode = 200
+    res.end(data)
 })
 
-
-
-const upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 10000000
-    },
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'image/png') {
-            cb(null, true)
-        }
-        else {
-            cb(new Error('please provide a png image'))
-        }
-    }
-
-})
-
-
-
-
-app.post('/', upload.single('avatar'), (req, res) => {
-    res.send('hello post data')
-})
-
-app.get('/', (req, res) => {
-    res.send('hellow world')
-})
-
-app.use((err, req, res, next) => {
-    if (err) {
-        if (err instanceof multer.MulterError) {
-            res.send('there was an errror')
-        } else {
-            res.send(err.message)
-        }
-    }
-})
-
-app.listen(3000, () => {
-    console.log('running');
+server.listen(serverHost, () => {
+    console.log('server in running');
 
 })

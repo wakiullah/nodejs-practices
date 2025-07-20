@@ -1,19 +1,14 @@
-import http from 'http'
-import fs from 'node:fs/promises'
-import path from 'node:path'
+import e from "express";
+import mongoose from "mongoose";
+const app = e()
 
-const serverHost = 3000
-const __dirname = import.meta.dirname
-const ourHtmlPath = path.join(__dirname, 'index.html')
-const server = http.createServer(async (req, res) => {
 
-    const data = await fs.readFile(ourHtmlPath, 'utf-8')
-    res.setHeader('Content-Type', 'text/html')
-    res.statusCode = 200
-    res.end(data)
+
+app.get('/', (req, res) => {
+    res.send('hello')
 })
 
-server.listen(serverHost, () => {
-    console.log('server in running');
+app.listen(3000, () => {
+    console.log('app is running');
 
 })

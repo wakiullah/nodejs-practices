@@ -1,7 +1,9 @@
-import e from "express";
-import mongoose from "mongoose";
+const e = require("express");
+const mongoose = require("mongoose");
 const todoHandler = require('./routeHandler/TodoHandler')
 const app = e()
+app.use(e.json())
+
 
 mongoose.connect('mongodb://localhost/todos', {
 

@@ -4,26 +4,46 @@ const todoSchima = require('../Schema/TodoSchema')
 const { default: mongoose } = require('mongoose')
 
 
-const Todo = new mongoose.model('Todo', todoSchima)
+const Todo = mongoose.model('Todo', todoSchima)
 
-router.get('/', async (req, res) => { })
+router.get('/', (req, res) => {
+    console.log(req.method);
+
+    res.send('hello')
+})
 router.get('/:id', async (req, res) => { })
 router.post('/', async (req, res) => {
+    console.log(req.body);
     const newTodo = new Todo(req.body)
-    await newTodo.save(err => {
-        if (err) {
-            res.status(500).json({
-                error: 'Theare were an error to post!'
-            })
-        } else {
-            res.status(200).json({
-                message: 'todo was created sucessfuly!'
-            })
-        }
-    })
+    await newTodo.save()
+    res.send('sucessful')
 })
-router.post('/all', async (req, res) => { })
-router.put('/:id', async (req, res) => { })
-router.delete('/:id', async (req, res) => { })
+
+
+router.post('/all', async (req, res) => {
+    await Todo.insertMany(req.body)
+    res.send('update many sucedss')
+})
+router.put('/:id', async (req, res) => {
+    // await Todo.updateOne({ _id: req.params.id }, {
+    //     $set: {
+    //         status: 'active'
+    //     }
+    // })
+    // res.send('update by id sucedss')
+    const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, {
+        $set: {
+            status: 'inactive'
+        }
+    }, {})
+    console.log(updatedTodo);
+    res.send('dfsdf')
+})
+router.delete('/:id', async (req, res) => {
+    Todo.deleteOne({ _id: req.params.id })
+    res.send('delete  ' + req.params.id + ' sucedss')
+
+})
+
 
 module.exports = router

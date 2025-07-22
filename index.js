@@ -15,7 +15,8 @@ mongoose.connect('mongodb://localhost/todos', {
     .catch((err) => console.log(err)
     )
 
-app.get('/', todoHandler)
+app.use('/todo', todoHandler)
+
 
 app.listen(3000, () => {
     console.log('app is running');

@@ -25,12 +25,7 @@ router.post('/all', async (req, res) => {
     res.send('update many sucedss')
 })
 router.put('/:id', async (req, res) => {
-    // await Todo.updateOne({ _id: req.params.id }, {
-    //     $set: {
-    //         status: 'active'
-    //     }
-    // })
-    // res.send('update by id sucedss')
+
     const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, {
         $set: {
             status: 'inactive'

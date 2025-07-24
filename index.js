@@ -1,8 +1,11 @@
 const e = require("express");
 const mongoose = require("mongoose");
 const todoHandler = require('./routeHandler/TodoHandler')
+const userHandler = require('./routeHandler/UserHandler')
+const dotenv = require("dotenv")
 const app = e()
 app.use(e.json())
+dotenv.config()
 
 
 mongoose.connect('mongodb://localhost/todos', {
@@ -16,6 +19,7 @@ mongoose.connect('mongodb://localhost/todos', {
     )
 
 app.use('/todo', todoHandler)
+app.use('/user', userHandler)
 
 
 app.listen(3000, () => {

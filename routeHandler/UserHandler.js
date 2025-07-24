@@ -4,7 +4,7 @@ const userSchema = require("../Schema/UserSchema");
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const router = express.Router()
- const User = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
 
 router.post('/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)

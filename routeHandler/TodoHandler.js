@@ -2,14 +2,14 @@ const express = require('express')
 const router = express.Router()
 const todoSchima = require('../Schema/TodoSchema')
 const { default: mongoose } = require('mongoose')
+const AuthMiddleWare = require('../middlewares/AuthMiddleware')
 
 
 const Todo = mongoose.model('Todo', todoSchima)
 
-router.get('/', (req, res) => {
-    console.log(req.method);
-
-    res.send('hello')
+router.get('/', AuthMiddleWare, (req, res) => {
+    const ab = req.body.userName
+    res.send('hello' + ab)
 })
 router.get('/:id', async (req, res) => { })
 router.post('/', async (req, res) => {

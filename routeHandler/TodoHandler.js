@@ -7,9 +7,12 @@ const AuthMiddleWare = require('../middlewares/AuthMiddleware')
 
 const Todo = mongoose.model('Todo', todoSchima)
 
-router.get('/', AuthMiddleWare, (req, res) => {
+router.get('/', AuthMiddleWare, async (req, res) => {
     const ab = req.body.userName
-    res.send('hello' + ab)
+    const todos = await Todo.find()
+    res.json({
+        ...todos
+    })
 })
 router.get('/:id', async (req, res) => { })
 router.post('/', async (req, res) => {

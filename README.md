@@ -3,10 +3,13 @@
 [![Instagram][instagram-shield]][instagram-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
-<!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center"><a href="https://github.com/learnwithsumit/uptime-monitoring-api-raw-node">Raw Node.js Project - Uptime Monitoring API - Lesson 3</a></h3>
+  <h3 align="center"><a href="https://github.com/learnwithsumit/chat-application/tree/lesson-3">Lesson - 3 - Node.js Chat Application in Express.js, MongoDB & EJS template engine</a></h3>
+
+A full stack Node.js project described in Bangla. Please check the video tutorial by clicking the image below -
+
+[![View on Youtube](http://img.youtube.com/vi/VclaxHIXrKw/0.jpg)](https://youtu.be/VclaxHIXrKw)
 
 <!-- TABLE OF CONTENTS -->
 
@@ -23,26 +26,24 @@ Please follow the below instructions to run this project in your machine:
 
 1. Clone this repository
    ```sh
-   git clone https://github.com/learnwithsumit/uptime-monitoring-api-raw-node.git
+   git clone https://github.com/learnwithsumit/chat-application.git
    ```
-2. Install dev dependencies
-   ```sh
-   npm install
-   ```
-3. Checkout to branch lesson-3
+2. Watch the youtube tutorial on this topic - https://youtu.be/VclaxHIXrKw.
+3. Check out to lesson-3 branch with the below command
    ```sh
    git checkout lesson-3
    ```
-4. Create 2 new folders in your root project
-   ```sh
-   mkdir .data
-   mkdir .data/users
-   ```
-5. Run the app
+4. Run npm install
+5. Then rename the .env.example file to ".env" and change values as per your need
+6. Finally run the application in development using below command -
    ```sh
    npm start
    ```
-6. Your app should be available in http://localhost:3000
+   or
+   You can run it in production mode by -
+   ```sh
+   npm run prod
+   ```
 
 <!-- CONTACT -->
 
@@ -50,7 +51,7 @@ Please follow the below instructions to run this project in your machine:
 
 Sumit Saha - [sumit@learnwithsumit.com](mailto:sumit@learnwithsumit.com)
 
-Project Link: [https://github.com/learnwithsumit/nodejs-basic-bangla](https://github.com/learnwithsumit/nodejs-basic-bangla)
+Project Link: [https://github.com/learnwithsumit/chat-application](https://github.com/learnwithsumit/chat-application)
 
 Youtube Channel: [https://youtube.com/LearnwithSumit](https://youtube.com/LearnwithSumit)
 

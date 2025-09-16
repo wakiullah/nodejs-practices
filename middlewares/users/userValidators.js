@@ -1,10 +1,8 @@
-// external imports
 const { check, validationResult } = require("express-validator");
 const createError = require("http-errors");
 const path = require("path");
 const { unlink } = require("fs");
 
-// internal imports
 const User = require("../../models/People");
 
 const addUserValidators = [
@@ -67,7 +65,6 @@ const addUserValidationHandler = function (req, res, next) {
       );
     }
 
-    // response the errors
     res.status(500).json({
       errors: mappedErrors,
     });

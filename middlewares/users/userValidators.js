@@ -54,7 +54,6 @@ const addUserValidationHandler = function (req, res, next) {
   if (Object.keys(mappedErrors).length === 0) {
     next();
   } else {
-    // remove uploaded files
     if (req.files.length > 0) {
       const { filename } = req.files[0];
       unlink(

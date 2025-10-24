@@ -28,7 +28,7 @@ const peopleSchema = mongoose.Schema(
       type: String,
       enum: ["admin", "user"],
       default: "user",
-    },
+    }
   },
 );
 

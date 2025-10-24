@@ -30,9 +30,6 @@ const peopleSchema = mongoose.Schema(
       default: "user",
     },
   },
-  {
-    timestamps: true,
-  }
 );
 
 

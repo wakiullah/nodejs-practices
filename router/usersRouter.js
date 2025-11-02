@@ -2,7 +2,6 @@
 const express = require("express");
 const { check } = require("express-validator");
 
-// internal imports
 const {
   getUsers,
   addUser,
@@ -17,7 +16,6 @@ const {
 
 const router = express.Router();
 
-// users page
 router.get("/", decorateHtmlResponse("Users"), getUsers);
 
 // add user

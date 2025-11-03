@@ -9,10 +9,8 @@ function uploader(
   max_file_size,
   error_msg
 ) {
-  // File upload folder
   const UPLOADS_FOLDER = `${__dirname}/../public/uploads/${subfolder_path}/`;
 
-  // define the storage
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, UPLOADS_FOLDER);
@@ -32,7 +30,6 @@ function uploader(
     },
   });
 
-  // preapre the final multer upload object
   const upload = multer({
     storage: storage,
     limits: {
